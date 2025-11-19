@@ -1,36 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Home</title>
-        <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="home.css">
-    </head>
-    <body>
-        <nav>
-            <div class="nav-links">
-                <a href="#">Home</a>
-                <a href="#">Map</a>
-                <a href="#">About</a>
-                <a href="#">Contact</a>
-            </div>
+<head>
+    <meta charset="UTF8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Outdoor Planner</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="home.css">
+</head>
 
-            <div class="auth" aria-haspopup="true">
-                <button class="auth-btn" aria-expanded="false">Account ▾</button>
-                <div class="auth-dropdown" role="menu">
-                    <a href="#" role="menuitem">Login</a>
-                    <a href="#" role="menuitem">Register</a>
-                </div>
-            </div>
-        </nav>
+<body>
 
-        <section class="hero">
-            <div class="hero-txt">WELCOME TO OUR WORLD</div>
-        </section>
+<nav>
+    <div class="nav-links">
+        <a href="#home">Home</a>
+        <a href="#map">Map</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+    </div>
 
-        <section class="content">
-            <p>Map part</p>
-        </section>
-    </body>
+    <div class="auth">
+        <button class="auth-btn">Account ▾</button>
+        <div class="auth-dropdown">
+            <a href="#">Login</a>
+            <a href="#">Register</a>
+        </div>
+    </div>
+</nav>
+
+<section class="hero">
+    <div class="hero-txt">WELCOME TO OUR WORLD</div>
+</section>
+
+<div class="section">
+    <h2>MAP</h2>
+    <div class="map-hint">Use your mouse to explore the map</div>
+    <div class="map-box"></div>
+</div>
+
+<div class="section">
+    <h2>ABOUT US</h2>
+    <div class="info-card">
+        <p>
+       
+        </p>
+        <p>
+            
+        </p>
+    </div>
+</div>
+
+<div class="section">
+    <h2>CONTACT US</h2>
+    <form class="contact-form">
+        <label>Your Name</label>
+        <input type="text" required>
+
+        <label>Your Email</label>
+        <input type="email" required>
+
+        <label>Your Message</label>
+        <textarea required></textarea>
+
+        <button type="submit">SEND</button>
+    </form>
+</div>
+
+</body>
 </html>

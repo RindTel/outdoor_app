@@ -99,8 +99,8 @@ nav a:hover {
     height: 40%;
     background: linear-gradient(
        rgba(43,46,51,0) 0%,
-rgba(43,46,51,0.5) 45%,
-#2b2e33 100% 
+       rgba(43,46,51,0.5) 45%,
+       #2b2e33 100% 
     );
 }
 
@@ -113,13 +113,127 @@ rgba(43,46,51,0.5) 45%,
     text-shadow: 3px 3px 0 #000;
 }
 
-.content {
-  padding: 80px 20px;
-  text-align: center;
-  font-size: 14px;
+html {
+    scroll-behavior: smooth;
 }
 
-.content, .hero {
+.section {
+    padding: 100px 20px;
+    text-align: center;
+    font-size: 14px;
+    color: white;
     border-left: 4px solid #1e2024;
     border-right: 4px solid #1e2024;
+    background-color: #2b2e33;
+}
+
+.section h2 {
+    font-size: 18px;
+    margin-bottom: 40px;
+    text-shadow: 3px 3px 0 #000;
+    position: relative;
+    display: inline-block;
+    padding: 10px 20px;
+}
+
+.section h2::before,
+.section h2::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 120px;
+    height: 3px;
+    background: black;
+}
+
+.section h2::before {
+    right: 100%;
+    margin-right: 15px;
+}
+
+.section h2::after {
+    left: 100%;
+    margin-left: 15px;
+}
+
+.section p {
+    max-width: 600px;
+    margin: 0 auto 20px auto;
+    line-height: 1.8;
+}
+
+.info-card {
+    background: #1e2024;
+    border: 4px solid black;
+    border-radius: 6px;
+    padding: 30px;
+    max-width: 650px;
+    margin: 0 auto;
+    box-shadow: 0 0 15px rgba(0,0,0,0.4);
+}
+
+.map-box {
+    width: 100%;
+    height: 400px;
+    background: #1e2024;
+    border: 4px solid black;
+    border-radius: 6px;
+    margin: 0 auto;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+}
+
+.map-hint {
+    margin-bottom: 20px;
+    font-size: 10px;
+    opacity: 0.7;
+}
+
+.contact-form {
+    max-width: 500px;
+    margin: 0 auto;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.contact-form label {
+    font-size: 12px;
+    color: #9ca3af;
+    letter-spacing: 1px;
+}
+
+.contact-form input,
+.contact-form textarea {
+    width: 100%;
+    padding: 14px;
+    border: 3px solid #000;
+    border-radius: 6px;
+    background: #1b1d20;
+    color: white;
+    font-family: "Press Start 2P", sans-serif;
+    font-size: 12px;
+    box-shadow: inset 0 0 6px rgba(0,0,0,0.4);
+}
+
+.contact-form textarea {
+    height: 130px;
+    resize: none;
+}
+
+.contact-form button {
+    padding: 14px;
+    background: #00ff88;
+    color: #000;
+    border: 3px solid #000;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: 0.2s;
+    box-shadow: 0 0 0 4px #00ff88 inset;
+}
+
+.contact-form button:hover {
+    background: #00d97a;
+    transform: scale(1.03);
 }
