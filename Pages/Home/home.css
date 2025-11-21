@@ -172,22 +172,70 @@ html {
     box-shadow: 0 0 15px rgba(0,0,0,0.4);
 }
 
-.map-box {
-    width: 100%;
-    height: 400px;
-    background: #1e2024;
-    border: 4px solid black;
-    border-radius: 6px;
-    margin: 0 auto;
-    box-shadow: 0 0 20px rgba(0,0,0,0.5);
-}
-
 .map-hint {
-    margin-bottom: 20px;
-    font-size: 10px;
-    opacity: 0.7;
-}
+            font-size: 0.75rem; /* Equivalent to 12px */
+            opacity: 0.6;
+            margin-bottom: 12px;
+            text-align: center;
+        }
 
+        .map-box {
+            width: 100%;
+            height: 400px;
+            background: #1e2024;
+            border: 4px solid #000;
+            border-radius: 12px;
+            margin: 0 auto;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+            overflow: hidden;
+            position: relative;
+            cursor: grab;
+            transition: all 0.3s ease;
+        }
+        
+        .map-box.grabbing {
+            cursor: grabbing;
+        }
+
+        .map-box.maximized {
+            position: fixed;
+            top: 5vh;
+            left: 5vw;
+            width: 90vw; 
+            height: 90vh; 
+            z-index: 100;
+        }
+
+        .map-box-content {
+            background-image: url('HARTA.png');
+            background-repeat: no-repeat;
+            background-size: 2400px 1200px; 
+            position: absolute;
+            width: 2400px;
+            height: 1200px;
+            will-change: transform; 
+        }
+
+        .maximize-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(43, 46, 51, 0.8); 
+            color: #f0f0f0;
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            z-index: 10;
+            transition: background-color 0.2s, transform 0.1s;
+            outline: none; 
+        }
+
+        .maximize-btn:hover {
+            background-color: #2b2e33;
+        }
 .contact-form {
     max-width: 500px;
     margin: 0 auto;

@@ -33,10 +33,161 @@
 </section>
 
 <div class="section" id="map">
-    <h2>MAP</h2>
-    <div class="map-hint">Use your mouse to explore the map</div>
-    <div class="map-box"></div>
+   <div class="map-container">
+    <div class="section" id="map">
+        <h2>UTOPIA EXPLORER</h2>
+        <div class="map-hint">Drag the map to pan and use the maximize button to view the full landscape.</div>
+        
+        <div class="map-box" id="interactiveMap">
+            
+            <button class="maximize-btn" id="maximizeButton">
+                Maximize
+            </button>
+            <div class="map-box-content" id="mapContent">
+            </div>
+            
+        </div>
+    </div>
 </div>
+</div>
+
+<script>
+    
+    const mapBox = document.getElementById('interactiveMap');
+    const mapContent = document.getElementById('mapContent');
+    const maximizeButton = document.getElementById('maximizeButton');
+    
+    
+    let isMaximized = false;
+    let isDragging = false;
+    let startX, startY, initialX, initialY;
+    
+    
+    let currentTranslateX = 0; 
+    let currentTranslateY = 0; 
+
+    
+    let preMaximizeTranslateX = 0;
+    let preMaximizeTranslateY = 0;
+
+
+    
+
+    function updateMapPosition() {
+        mapContent.style.transform = `translate3d(${currentTranslateX}px, ${currentTranslateY}px, 0)`;
+    }
+
+    
+    function setInitialMapPosition() {
+        const centerX = (mapBox.clientWidth - mapContent.clientWidth) / 2;
+        const centerY = (mapBox.clientHeight - mapContent.clientHeight) / 2;
+        
+        currentTranslateX = centerX + 400; 
+        currentTranslateY = centerY + 100;
+        updateMapPosition();
+    }
+
+    window.addEventListener('load', setInitialMapPosition);
+    window.addEventListener('resize', () => {
+        recalculateBoundaries();
+    });
+
+    mapBox.addEventListener('mousedown', startDrag);
+    mapBox.addEventListener('touchstart', startDrag);
+
+    mapBox.addEventListener('mouseup', endDrag);
+    mapBox.addEventListener('touchend', endDrag);
+
+    mapBox.addEventListener('mousemove', drag);
+    mapBox.addEventListener('touchmove', drag);
+
+    function startDrag(e) {
+        if (e.target.id === 'maximizeButton') return;
+
+        isDragging = true;
+        mapBox.classList.add('grabbing');
+        e.preventDefault(); 
+        
+        const client = e.touches ? e.touches[0] : e;
+        startX = client.clientX;
+        startY = client.clientY;
+        initialX = currentTranslateX;
+        initialY = currentTranslateY;
+    }
+
+    function endDrag() {
+        isDragging = false;
+        mapBox.classList.remove('grabbing');
+    }
+
+    function drag(e) {
+        if (!isDragging) return;
+        
+        const client = e.touches ? e.touches[0] : e;
+        const dx = client.clientX - startX;
+        const dy = client.clientY - startY;
+
+        currentTranslateX = initialX + dx;
+        currentTranslateY = initialY + dy;
+
+        recalculateBoundaries(); 
+    }
+
+    function recalculateBoundaries() {
+        const maxTranslateX = 0;
+        const maxTranslateY = 0;
+        
+        const minTranslateX = mapBox.clientWidth - mapContent.clientWidth;
+        const minTranslateY = mapBox.clientHeight - mapContent.clientHeight;
+        
+        currentTranslateX = Math.max(Math.min(currentTranslateX, maxTranslateX), minTranslateX);
+        currentTranslateY = Math.max(Math.min(currentTranslateY, maxTranslateY), minTranslateY);
+
+        updateMapPosition();
+    }
+
+
+  
+
+    maximizeButton.addEventListener('click', toggleMaximize);
+
+    function toggleMaximize() {
+        isMaximized = !isMaximized;
+        
+        if (isMaximized) {
+            
+            preMaximizeTranslateX = currentTranslateX;
+            preMaximizeTranslateY = currentTranslateY;
+
+            mapBox.classList.add('maximized');
+            maximizeButton.textContent = 'Minimize';
+            document.body.style.overflow = 'hidden'; 
+
+            setTimeout(() => {
+                const boxWidth = mapBox.clientWidth;
+                const boxHeight = mapBox.clientHeight;
+                const contentWidth = mapContent.clientWidth;
+                const contentHeight = mapContent.clientHeight;
+                currentTranslateX = (boxWidth - contentWidth) / 2;
+                currentTranslateY = (boxHeight - contentHeight) / 2;
+
+                updateMapPosition();
+            }, 50);
+
+        } else {
+            mapBox.classList.remove('maximized');
+            maximizeButton.textContent = 'Maximize';
+            document.body.style.overflow = '';
+            currentTranslateX = preMaximizeTranslateX;
+            currentTranslateY = preMaximizeTranslateY;
+            
+            updateMapPosition();
+
+            setTimeout(recalculateBoundaries, 350); 
+        }
+    }
+
+</script>
 
 <div class="section" id="about">
     <h2>ABOUT US</h2>
