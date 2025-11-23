@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Outdoor Planner</title>
     
@@ -35,7 +35,7 @@
 <div class="section" id="map">
    <div class="map-container">
     <div class="section" id="map">
-        <h2>UTOPIA EXPLORER</h2>
+        <h2>MAP</h2>
         <div class="map-hint">Drag the map to pan and use the maximize button to view the full landscape.</div>
         
         <div class="map-box" id="interactiveMap">
@@ -43,7 +43,20 @@
             <button class="maximize-btn" id="maximizeButton">
                 Maximize
             </button>
+            
             <div class="map-box-content" id="mapContent">
+                <div class="map-pointers-container">
+                    <div class="map-pointer" style="left: 1220px; top: 230px;"></div>
+                     <div class="map-pointer" style="left: 1220px; top: 600px;"></div>
+                    <div class="map-pointer" style="left: 670px; top: 540px;"></div>
+                    <div class="map-pointer" style="left: 2310px; top: 650px;"></div>
+                    <div class="map-pointer" style="left: 1540px; top: 580px;"></div>
+                    <div class="map-pointer" style="left: 440px; top: 460px;"></div>
+                 <div class="map-pointer" style="left: 700px; top: 250px;"></div> 
+                 <div class="map-pointer" style="left: 500px; top: 1050px;"></div> -->
+                    <div class="map-pointer" style="left: 500px; top: 180px;"></div>
+                    <div class="map-pointer" style="left: 2135px; top: 400px;"></div>   -->
+                </div>
             </div>
             
         </div>
@@ -79,9 +92,10 @@
 
     
     function setInitialMapPosition() {
-        const centerX = (mapBox.clientWidth - mapContent.clientWidth) / 2;
-        const centerY = (mapBox.clientHeight - mapContent.clientHeight) / 2;
-        
+
+        const centerX = (mapBox.clientWidth - 2400) / 2;
+        const centerY = (mapBox.clientHeight - 1200) / 2;
+
         currentTranslateX = centerX + 400; 
         currentTranslateY = centerY + 100;
         updateMapPosition();
@@ -89,7 +103,16 @@
 
     window.addEventListener('load', setInitialMapPosition);
     window.addEventListener('resize', () => {
-        recalculateBoundaries();
+        
+        if (!isMaximized) {
+            recalculateBoundaries();
+        } else {
+             const boxWidth = mapBox.clientWidth;
+             const boxHeight = mapBox.clientHeight;
+             currentTranslateX = (boxWidth - 2400) / 2;
+             currentTranslateY = (boxHeight - 1200) / 2;
+             updateMapPosition();
+        }
     });
 
     mapBox.addEventListener('mousedown', startDrag);
@@ -102,7 +125,7 @@
     mapBox.addEventListener('touchmove', drag);
 
     function startDrag(e) {
-        if (e.target.id === 'maximizeButton') return;
+        if (e.target.id === 'maximizeButton' || e.target.classList.contains('map-pointer')) return;
 
         isDragging = true;
         mapBox.classList.add('grabbing');
@@ -134,11 +157,16 @@
     }
 
     function recalculateBoundaries() {
+        if (isMaximized) {
+             updateMapPosition();
+             return;
+        }
+
         const maxTranslateX = 0;
         const maxTranslateY = 0;
         
-        const minTranslateX = mapBox.clientWidth - mapContent.clientWidth;
-        const minTranslateY = mapBox.clientHeight - mapContent.clientHeight;
+        const minTranslateX = mapBox.clientWidth - 2400;
+        const minTranslateY = mapBox.clientHeight - 1200;
         
         currentTranslateX = Math.max(Math.min(currentTranslateX, maxTranslateX), minTranslateX);
         currentTranslateY = Math.max(Math.min(currentTranslateY, maxTranslateY), minTranslateY);
@@ -166,8 +194,8 @@
             setTimeout(() => {
                 const boxWidth = mapBox.clientWidth;
                 const boxHeight = mapBox.clientHeight;
-                const contentWidth = mapContent.clientWidth;
-                const contentHeight = mapContent.clientHeight;
+                const contentWidth = 2400; 
+                const contentHeight = 1200;
                 currentTranslateX = (boxWidth - contentWidth) / 2;
                 currentTranslateY = (boxHeight - contentHeight) / 2;
 

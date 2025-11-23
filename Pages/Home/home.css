@@ -173,69 +173,122 @@ html {
 }
 
 .map-hint {
-            font-size: 0.75rem; /* Equivalent to 12px */
-            opacity: 0.6;
-            margin-bottom: 12px;
-            text-align: center;
-        }
+    font-size: 0.75rem; 
+    margin-bottom: 12px;
+    text-align: center;
+}
 
-        .map-box {
-            width: 100%;
-            height: 400px;
-            background: #1e2024;
-            border: 4px solid #000;
-            border-radius: 12px;
-            margin: 0 auto;
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
-            overflow: hidden;
-            position: relative;
-            cursor: grab;
-            transition: all 0.3s ease;
-        }
+.map-box {
+    width: 100%;
+    height: 400px;
+    background: #1e2024;
+    border: 4px solid #000;
+    border-radius: 12px;
+    margin: 0 auto;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+    overflow: hidden;
+    position: relative;
+    cursor: grab;
+    transition: all 0.3s ease;
+}
+
+.map-box.grabbing {
+    cursor: grabbing;
+}
+
+.map-box.maximized {
+    position: fixed;
+    top: 5vh;
+    left: 5vw;
+    width: 90vw; 
+    height: 90vh; 
+    z-index: 100;
+}
+
+.map-box-content {
+    background-image: url('HARTA.png');
+    background-repeat: no-repeat;
+    background-size: 2400px 1200px; 
+    position: absolute;
+    width: 2400px;
+    height: 1200px;
+    will-change: transform; 
+}
+
+.maximize-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: rgba(43, 46, 51, 0.8); 
+    color: #f0f0f0;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    z-index: 10;
+    transition: background-color 0.2s, transform 0.1s;
+    outline: none; 
+}
+
+.maximize-btn:hover {
+    background-color: #2b2e33;
+}
+
+.map-pointers-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.map-pointer {
+    
+    width: 12px; 
+    height: 16px;
+    position: absolute;
+    
+   
+    margin-left: -6px; 
+    margin-top: -16px; 
+    
+   
+    background: none; 
+    border: none;
+    
+  
+    --pointer-color: #fbbc05; 
+    --shadow-color: #d9a004;
+
+    box-shadow: 
         
-        .map-box.grabbing {
-            cursor: grabbing;
-        }
+        0 -1px 0 0 var(--pointer-color),
+        -1px -1px 0 0 var(--pointer-color),
+        1px -1px 0 0 var(--pointer-color),
 
-        .map-box.maximized {
-            position: fixed;
-            top: 5vh;
-            left: 5vw;
-            width: 90vw; 
-            height: 90vh; 
-            z-index: 100;
-        }
+        -2px 0 0 0 var(--pointer-color),
+        2px 0 0 0 var(--pointer-color),
+        -2px 1px 0 0 var(--pointer-color),
+        2px 1px 0 0 var(--pointer-color),
+        
+       
+        -1px 11px 0 0 var(--pointer-color),
+        1px 11px 0 0 var(--pointer-color),
+        0 12px 0 0 var(--pointer-color),
+        
+        
+        0 0 0 1px var(--shadow-color) inset,
+        0 1px 0 1px var(--shadow-color) inset;
+}
 
-        .map-box-content {
-            background-image: url('HARTA.png');
-            background-repeat: no-repeat;
-            background-size: 2400px 1200px; 
-            position: absolute;
-            width: 2400px;
-            height: 1200px;
-            will-change: transform; 
-        }
+.map-pointer:hover {
+    filter: brightness(1.2);
+    transform: translateY(-2px);
+    transition: transform 0.1s ease-out;
+}
 
-        .maximize-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background-color: rgba(43, 46, 51, 0.8); 
-            color: #f0f0f0;
-            padding: 8px 12px;
-            border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            z-index: 10;
-            transition: background-color 0.2s, transform 0.1s;
-            outline: none; 
-        }
-
-        .maximize-btn:hover {
-            background-color: #2b2e33;
-        }
 .contact-form {
     max-width: 500px;
     margin: 0 auto;
