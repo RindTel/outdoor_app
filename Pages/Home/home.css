@@ -323,11 +323,12 @@ html {
 }
 
 .contact-form button {
-    padding: 14px;
+    padding: 15px;
+    width: 535px;
     background: #00ff88;
     color: #000;
     border: 3px solid #000;
-    border-radius: 6px;
+    border-radius: 10px;
     cursor: pointer;
     font-size: 12px;
     transition: 0.2s;
