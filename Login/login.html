@@ -1,26 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Outdoor Planner - Login</title>
-    
+    <title>Login</title>
+
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="login.css">
 </head>
 <body>
+
     <div class="login-container">
         <h2>Login</h2>
-        <form class="login-form">
-            <label for="username">Username</label>
-            <input type="text" id="username" name="username" required>
 
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password" required>
+        <form id="loginForm" class="login-form" novalidate>
+            <label for="loginUser">Email</label>
+            <input type="text" id="loginUser" name="username" required>
+            <div id="loginUserError" class="error"></div>
+
+            <label for="loginPassword">Password</label>
+            <input type="password" id="loginPassword" name="password" required>
+            <div id="loginPasswordError" class="error"></div>
 
             <button type="submit">Login</button>
         </form>
-        <p class="register-link">Don't have an account? <a href="#">Register here</a></p>
+
+        <p id="loginSuccess" class="success"></p>
+
+        <p class="register-link">
+            Don't have an account? <a href="/Login/register.html">Register here</a>
+        </p>
     </div>
+
+    <script>
+        const loginUserRe = /^[a-zA-Z][a-zA-Z0-9_]{2,14}$/;
+        const loginPasswordRe = /^.{6,}$/;
+
+        const loginForm = document.getElementById("loginForm");
+        const loginUser = document.getElementById("loginUser");
+        const loginPassword = document.getElementById("loginPassword");
+
+        const loginUserError = document.getElementById("loginUserError");
+        const loginPasswordError = document.getElementById("loginPasswordError");
+        const loginSuccess = document.getElementById("loginSuccess");
+
+        function cleanLoginErrors() {
+            loginUserError.textContent = "";
+            loginPasswordError.textContent = "";
+            loginSuccess.textContent = "";
+        }
+
+        function validateLogin() {
+            let valid = true;
+            cleanLoginErrors();
+
+            if (!loginUserRe.test(loginUser.value.trim())) {
+                loginUserError.textContent = "Username apo passwordi i pasaktë.";
+                valid = false;
+            }
+
+            if (!loginPasswordRe.test(loginPassword.value.trim())) {
+                loginPasswordError.textContent = "Password duhet të ketë minimum 6 karaktere.";
+                valid = false;
+            }
+
+            return valid;
+        }
+
+        loginForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            if (validateLogin()) {
+                loginSuccess.textContent = "Mirë se erdhe!";
+
+                setTimeout(() => {
+                    window.location.href = "/Pages/Home/home.html";
+                }, 500);
+            }
+        });
+
+        loginUser.addEventListener("input", () => {
+            if (loginUserRe.test(loginUser.value.trim())) {
+                loginUserError.textContent = "";
+            }
+        });
+
+        loginPassword.addEventListener("input", () => {
+            if (loginPasswordRe.test(loginPassword.value.trim())) {
+                loginPasswordError.textContent = "";
+            }
+        });
+    </script>
+
 </body>
 </html>
