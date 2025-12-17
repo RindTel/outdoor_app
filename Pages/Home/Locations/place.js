@@ -18,7 +18,7 @@ const places = {
     },
     Yacht: {
         title: "Yacht Tour",
-        img: "Yacht.png",
+        img: "yacht.png",
         description: "Luxury yacht tours along the sparkling coastline offering stunning sea views, fresh ocean breeze, and a relaxing atmosphere perfect for celebrations or romantic outings.",
         details: {
             hours: "6am-10pm",
@@ -35,7 +35,7 @@ const places = {
     },
     Museum: {
         title: "History Museum",
-        img: "Museum.png",
+        img: "kinezi.png",
         description: "A sprawling museum that houses artifacts spanning centuries—from ancient civilizations to modern history. Perfect for history enthusiasts, families, and students.",
         details: {
             tickets: "$12",
@@ -84,7 +84,7 @@ const places = {
     },
     Library: {
         title: "Central Library",
-        img: "Library.png",
+        img: "shteti.png",
         description: "A haven for book lovers, researchers, and students. Thousands of books, quiet study zones, and modern facilities make it ideal for learning or relaxing.",
         details: {
             freeEntry: true,
@@ -129,22 +129,23 @@ const places = {
             nearby: ["Cafes", "Parks", "Hiking Trails"]
         }
     },
-    Church: {
-        title: "Old Church",
-        img: "OldChurch.png",
-        description: "A historic church featuring stunning architecture, stained glass windows, and centuries-old heritage. Combines spirituality and cultural significance.",
-        details: {
-            hours: "9am-5pm",
-            highlights: ["Stained Glass Windows", "Ancient Bells", "Historic Gravestones", "Religious Artifacts"],
-            activities: ["Guided Tours", "Photography", "Prayer", "Cultural Events"],
-            facilities: ["Seating", "Restrooms", "Donation Box"],
-            tips: ["Respectful attire recommended", "Quiet zone inside", "Photography allowed in some areas"],
-            ambiance: ["Reverent", "Majestic", "Peaceful"],
-            accessibility: ["Wheelchair Access", "Ramps"],
-            signatureFeature: "Sunlight through Stained Glass at Noon",
-            nearby: ["Cafes", "Public Transport", "Museums"]
-        }
-    },
+  Estate: {
+    title: "Real Estate",
+    img: "realestate.png",
+    description: "A modern real estate building featuring contemporary design, functional spaces, and a prime location for residential or commercial use.",
+    details: {
+        hours: "9am-5pm",
+        highlights: ["Modern Design", "Spacious Units", "Secure Access", "Prime Location"],
+        activities: ["Property Tours", "Open House Visits", "Agent Meetings"],
+        facilities: ["Parking", "Elevator", "Security"],
+        tips: ["Schedule visits early", "Ask about pricing", "Check amenities"],
+        ambiance: ["Modern", "Professional", "Comfortable"],
+        accessibility: ["Wheelchair Access", "Ramps"],
+        signatureFeature: "City View from Upper Floors",
+        nearby: ["Shops", "Public Transport", "Restaurants"]
+    }
+},
+
     Mountain: {
         title: "Mountain Peak",
         img: "mountain.png",
@@ -201,15 +202,15 @@ function showPlace(placeKey) {
     }
 }
 
-// ---- Check URL parameter for place ----
+
 const urlParams = new URLSearchParams(window.location.search);
 const placeFromURL = urlParams.get("place");
 
-// ---- If no URL, default to first place in object ----
+
 const defaultPlace = placeFromURL || Object.keys(places)[0];
 showPlace(defaultPlace);
 
-// ---- Add dynamic click events if you have map pointers ----
+
 document.querySelectorAll(".map-pointer").forEach(pointer => {
     pointer.addEventListener("click", () => {
         const placeKey = pointer.getAttribute("data-place");
