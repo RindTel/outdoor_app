@@ -11,7 +11,7 @@ if (!isLoggedIn()) {
 
 $conn = db_connect();
 
-// Fetch places
+
 $places = Place::all();
 
 $errors = [];

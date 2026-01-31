@@ -30,6 +30,20 @@ class User
         );
     }
 
+    public static function all(): array
+    {
+        $conn = getDBConnection();
+        $result = $conn->query("SELECT * FROM users ORDER BY id");
+        $users = [];
+
+        while ($row = $result->fetch_assoc()) {
+            $users[] = self::fromRow($row);
+        }
+
+        $conn->close();
+        return $users;
+    }
+
     public static function findByUsername(string $username): ?self
     {
         $conn = getDBConnection();

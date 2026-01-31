@@ -76,7 +76,7 @@ CREATE TABLE IF NOT EXISTS contact_messages (
 
 
 INSERT INTO users (username, email, password, role) VALUES
-('admin', 'admin@example.com', 'admin', 'admin'),
+('admin', 'admin@example.com', 'admin1', 'admin'),
 ('leonbossi', 'leon@gmail.com', 'password123', 'user'),
 ('rindrit', 'rindrit@gmail.com', 'password123', 'user');
 

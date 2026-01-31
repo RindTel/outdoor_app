@@ -40,6 +40,7 @@ $conn->close();
         <?php if (isLoggedIn()): ?>
             <button class="auth-btn"><?php echo htmlspecialchars(getCurrentUsername()); ?> ▾</button>
             <div class="auth-dropdown">
+                <a href="../../Pages/Tickets/my_tickets.php">My Tickets</a>
                 <a href="../../api/logout.php">Logout</a>
             </div>
         <?php else: ?>
@@ -116,14 +117,11 @@ $conn->close();
                 pointer.className = 'map-pointer';
                 pointer.href = `Locations/place.php?place=${encodeURIComponent(place.name)}`;
                 pointer.setAttribute('data-place', place.name);
-                pointer.textContent = place.name;
-                pointer.title = place.description;
-               
-                const cols = 5;
-                const row = Math.floor(index / cols);
-                const col = index % cols;
-                pointer.style.left = (col * 200 + 100) + 'px';
-                pointer.style.top = (row * 80 + 100) + 'px';
+                pointer.textContent = ''; // Removed text as requested
+                pointer.title = place.title + "\n" + place.description;
+
+                pointer.style.left = place.position_x + 'px';
+                pointer.style.top = place.position_y + 'px';
                 container.appendChild(pointer);
             });
         } catch (error) {

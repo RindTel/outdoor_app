@@ -1,5 +1,5 @@
 <?php
-require_once '../config.php';
+require_once __DIR__ . '/../config.php';
 require_once __DIR__ . '/../classes/Place.php';
 
 header('Content-Type: application/json');
@@ -29,9 +29,12 @@ if (isset($_GET['place'])) {
         $response = [
             'id' => $place->id,
             'name' => $place->name,
+            'title' => $place->title,
             'description' => $place->description,
-            'location' => $place->location,
             'image' => $place->image,
+            'position_x' => $place->position_x,
+            'position_y' => $place->position_y,
+            'ticket_price' => $place->ticket_price,
             'details' => $details
         ];
 
@@ -48,9 +51,12 @@ if (isset($_GET['place'])) {
         $response[] = [
             'id' => $p->id,
             'name' => $p->name,
+            'title' => $p->title,
             'description' => $p->description,
-            'location' => $p->location,
-            'image' => $p->image
+            'image' => $p->image,
+            'position_x' => $p->position_x,
+            'position_y' => $p->position_y,
+            'ticket_price' => $p->ticket_price
         ];
     }
     echo json_encode($response);

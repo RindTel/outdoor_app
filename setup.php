@@ -35,7 +35,7 @@ if (!file_exists($schemaFile)) {
 
 $schema = file_get_contents($schemaFile);
 
-// Split by semicolons and execute each statement
+
 $statements = array_filter(array_map('trim', explode(';', $schema)));
 
 $successCount = 0;
@@ -43,12 +43,12 @@ $errorCount = 0;
 
 foreach ($statements as $statement) {
     if (empty($statement) || strpos($statement, '--') === 0) {
-        continue; // Skip comments and empty statements
+        continue; 
     }
     
     if (stripos($statement, 'CREATE DATABASE') !== false || 
         stripos($statement, 'USE ') !== false) {
-        continue; // Skip database creation and USE statements
+        continue; 
     }
     
     if ($conn->query($statement) === TRUE) {
@@ -66,7 +66,7 @@ if ($errorCount > 0) {
     echo "<p style='color: orange;'>⚠ $errorCount statements had warnings (may be due to existing data)</p>";
 }
 
-// Verify tables
+
 $tables = ['users', 'places', 'place_details', 'contact_messages'];
 echo "<h3>Verifying tables:</h3>";
 foreach ($tables as $table) {
