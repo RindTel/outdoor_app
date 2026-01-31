@@ -1,3 +1,21 @@
+<?php
+require_once '../../config.php';
+
+
+$conn = getDBConnection();
+
+$heroStmt = $conn->prepare("SELECT title, body FROM site_content WHERE slug = 'home_hero' LIMIT 1");
+$heroStmt->execute();
+$heroContent = $heroStmt->get_result()->fetch_assoc();
+$heroStmt->close();
+
+$aboutStmt = $conn->prepare("SELECT title, body FROM site_content WHERE slug = 'about_text' LIMIT 1");
+$aboutStmt->execute();
+$aboutContent = $aboutStmt->get_result()->fetch_assoc();
+$aboutStmt->close();
+
+$conn->close();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,7 +26,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="home.css">
 </head>
-
 <body>
 
 <nav>
@@ -20,16 +37,44 @@
     </div>
 
     <div class="auth">
-        <button class="auth-btn">Account ▾</button>
-        <div class="auth-dropdown">
-            <a href="/Login/login.html">Login</a>
-            <a href="/Login/register.html">Register</a>
-        </div>
+        <?php if (isLoggedIn()): ?>
+            <button class="auth-btn"><?php echo htmlspecialchars(getCurrentUsername()); ?> ▾</button>
+            <div class="auth-dropdown">
+                <a href="../../api/logout.php">Logout</a>
+            </div>
+        <?php else: ?>
+            <button class="auth-btn">Account ▾</button>
+            <div class="auth-dropdown">
+                <a href="../../Login/login.php">Login</a>
+                <a href="../../Login/register.php">Register</a>
+            </div>
+        <?php endif; ?>
     </div>
 </nav>
 
 <section class="hero">
-    <div class="hero-txt">WELCOME TO OUR WORLD</div>
+    <div class="hero-txt">
+        <?php echo htmlspecialchars($heroContent['title'] ?? 'WELCOME TO OUR WORLD'); ?>
+    </div>
+</section>
+
+<section class="hero-slider">
+    <div class="slider-window">
+        <div class="slider-track" id="heroSliderTrack">
+            <div class="slide">
+                <h3>Explore Interactive Map</h3>
+                <p>Drag, zoom, and discover unique outdoor locations.</p>
+            </div>
+            <div class="slide">
+                <h3>Book Tickets Instantly</h3>
+                <p>Choose a place, pick a date, and download your ticket as PDF.</p>
+            </div>
+            <div class="slide">
+                <h3>Plan With Friends</h3>
+                <p>Share locations and plan unforgettable outdoor adventures.</p>
+            </div>
+        </div>
+    </div>
 </section>
 
 <div class="section" id="map">
@@ -45,20 +90,9 @@
             </button>
             
             <div class="map-box-content" id="mapContent">
-<div class="map-pointers-container">
-    <a class="map-pointer" href="Locations/place.html?place=Restaurant" data-place="Restaurant" style="left: 1310px; top: 390px;"></a> 
-    <a class="map-pointer" href="Locations/place.html?place=Yacht" data-place="Yacht" style="left: 1630px; top: 550px;"></a> 
-    <a class="map-pointer" href="Locations/place.html?place=Museum" data-place="Museum" style="left: 740px; top: 255px;"></a>
- <a class="map-pointer" href="Locations/place.html?place=ShoppingMall" data-place="ShoppingMall" style="left: 550px; top: 630px;"></a> 
-    <a class="map-pointer" href="Locations/place.html?place=Stadium" data-place="Stadium" style="left: 1087px; top: 650px;"></a> 
-    <a class="map-pointer" href="Locations/place.html?place=Library" data-place="Library" style="left: 360px; top: 370px;"></a>
-    <a class="map-pointer" href="Locations/place.html?place=Market" data-place="Market" style="left: 760px; top: 840px;"></a> 
-    <a class="map-pointer" href="Locations/place.html?place=Lake" data-place="Lake" style="left: 1500px; top: 120px;"></a> 
-    <a class="map-pointer" href="Locations/place.html?place=Estate" data-place="Estate" style="left: 500px; top: 180px;"></a>
-    <a class="map-pointer" href="Locations/place.html?place=Mountain" data-place="Mountain" style="left: 2245px; top: 160px;"></a> 
-</div>
-
-
+                <div class="map-pointers-container" id="mapPointersContainer">
+                    
+                </div>
             </div>
             
         </div>
@@ -68,33 +102,57 @@
 
 <script>
     
+    async function loadPlaces() {
+        try {
+            const response = await fetch('../../api/places.php');
+            const places = await response.json();
+            
+            const container = document.getElementById('mapPointersContainer');
+            container.innerHTML = '';
+            
+           
+            places.forEach((place, index) => {
+                const pointer = document.createElement('a');
+                pointer.className = 'map-pointer';
+                pointer.href = `Locations/place.php?place=${encodeURIComponent(place.name)}`;
+                pointer.setAttribute('data-place', place.name);
+                pointer.textContent = place.name;
+                pointer.title = place.description;
+               
+                const cols = 5;
+                const row = Math.floor(index / cols);
+                const col = index % cols;
+                pointer.style.left = (col * 200 + 100) + 'px';
+                pointer.style.top = (row * 80 + 100) + 'px';
+                container.appendChild(pointer);
+            });
+        } catch (error) {
+            console.error('Error loading places:', error);
+        }
+    }
+    
+   
+    loadPlaces();
+    
     const mapBox = document.getElementById('interactiveMap');
     const mapContent = document.getElementById('mapContent');
     const maximizeButton = document.getElementById('maximizeButton');
-    
     
     let isMaximized = false;
     let isDragging = false;
     let startX, startY, initialX, initialY;
     
-    
     let currentTranslateX = 0; 
     let currentTranslateY = 0; 
 
-    
     let preMaximizeTranslateX = 0;
     let preMaximizeTranslateY = 0;
-
-
-    
 
     function updateMapPosition() {
         mapContent.style.transform = `translate3d(${currentTranslateX}px, ${currentTranslateY}px, 0)`;
     }
 
-    
     function setInitialMapPosition() {
-
         const centerX = (mapBox.clientWidth - 2400) / 2;
         const centerY = (mapBox.clientHeight - 1200) / 2;
 
@@ -105,7 +163,6 @@
 
     window.addEventListener('load', setInitialMapPosition);
     window.addEventListener('resize', () => {
-        
         if (!isMaximized) {
             recalculateBoundaries();
         } else {
@@ -176,16 +233,12 @@
         updateMapPosition();
     }
 
-
-  
-
     maximizeButton.addEventListener('click', toggleMaximize);
 
     function toggleMaximize() {
         isMaximized = !isMaximized;
         
         if (isMaximized) {
-            
             preMaximizeTranslateX = currentTranslateX;
             preMaximizeTranslateY = currentTranslateY;
 
@@ -217,35 +270,89 @@
         }
     }
 
+    
+    const heroSliderTrack = document.getElementById('heroSliderTrack');
+    const heroSlides = heroSliderTrack ? heroSliderTrack.children : [];
+    let heroIndex = 0;
+
+    function updateHeroSlider() {
+        if (!heroSliderTrack || heroSlides.length === 0) return;
+        const offset = -heroIndex * 100;
+        heroSliderTrack.style.transform = `translateX(${offset}%)`;
+    }
+
+    function nextHeroSlide() {
+        if (!heroSlides.length) return;
+        heroIndex = (heroIndex + 1) % heroSlides.length;
+        updateHeroSlider();
+    }
+
+    setInterval(nextHeroSlide, 5000);
+
 </script>
 
 <div class="section" id="about">
-    <h2>ABOUT US</h2>
+    <h2><?php echo htmlspecialchars($aboutContent['title'] ?? 'ABOUT US'); ?></h2>
     <div class="info-card">
         <p>
-       A asht ma mir me kan i Shetitur a i ditur (Kur je i shetitur je edhe i ditur)- Shakespeari
-        </p>
-        <p>
-            
+            <?php echo nl2br(htmlspecialchars($aboutContent['body'] ?? '')); ?>
         </p>
     </div>
 </div>
 
 <div class="section" id="contact">
     <h2>CONTACT US</h2>
-    <form class="contact-form">
+    <form class="contact-form" id="contactForm">
         <label>Your Name</label>
-        <input type="text" required>
+        <input type="text" id="contactName" required>
 
         <label>Your Email</label>
-        <input type="email" required>
+        <input type="email" id="contactEmail" required>
 
         <label>Your Message</label>
-        <textarea required></textarea>
+        <textarea id="contactMessage" required></textarea>
 
         <button type="submit">SEND</button>
+        <div id="contactMessageResult" style="margin-top: 10px; font-size: 10px;"></div>
     </form>
 </div>
+
+<script>
+   
+    document.getElementById('contactForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const name = document.getElementById('contactName').value;
+        const email = document.getElementById('contactEmail').value;
+        const message = document.getElementById('contactMessage').value;
+        const resultDiv = document.getElementById('contactMessageResult');
+        
+        try {
+            const response = await fetch('../../api/contact.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ name, email, message })
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                resultDiv.textContent = 'Message sent successfully!';
+                resultDiv.style.color = '#9be7c4';
+                document.getElementById('contactForm').reset();
+            } else {
+                resultDiv.textContent = data.message || 'Failed to send message';
+                resultDiv.style.color = '#ff8c8c';
+            }
+        } catch (error) {
+            resultDiv.textContent = 'Error: Could not connect to server.';
+            resultDiv.style.color = '#ff8c8c';
+            console.error('Error:', error);
+        }
+    });
+</script>
 
 </body>
 </html>
