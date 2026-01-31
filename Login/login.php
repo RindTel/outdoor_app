@@ -1,3 +1,4 @@
+<?php require_once '../config.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,7 +29,7 @@
         <p id="loginSuccess" class="success"></p>
 
         <p class="register-link">
-            Don't have an account? <a href="/Login/register.html">Register here</a>
+            Don't have an account? <a href="register.php">Register here</a>
         </p>
     </div>
 
@@ -67,15 +68,36 @@
             return valid;
         }
 
-        loginForm.addEventListener("submit", (e) => {
+        loginForm.addEventListener("submit", async (e) => {
             e.preventDefault();
 
             if (validateLogin()) {
-                loginSuccess.textContent = "Mirë se erdhe!";
+                try {
+                    const response = await fetch('../api/login.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            username: loginUser.value.trim(),
+                            password: loginPassword.value.trim()
+                        })
+                    });
 
-                setTimeout(() => {
-                    window.location.href = "/Pages/Home/home.html";
-                }, 500);
+                    const data = await response.json();
+
+                    if (data.success) {
+                        loginSuccess.textContent = "Mirë se erdhe!";
+                        setTimeout(() => {
+                            window.location.href = "../Pages/Home/home.php";
+                        }, 500);
+                    } else {
+                        loginUserError.textContent = data.message || "Username apo passwordi i pasaktë.";
+                    }
+                } catch (error) {
+                    loginUserError.textContent = "Error: Could not connect to server.";
+                    console.error('Error:', error);
+                }
             }
         });
 

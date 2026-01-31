@@ -1,9 +1,9 @@
 <?php
 
-$host = 'localhost';
+$host = 'localhost2';
 $user = 'root';
 $pass = '';
-$dbname = 'outdoor_app';
+$dbname = 'outdoor_planner';
 
 echo "<h2>Outdoor App Database Setup</h2>";
 

@@ -1,3 +1,4 @@
+<?php require_once '../config.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,7 +39,7 @@
 
         <p class="login-link">
             Already have an account?
-            <a href="../Login/login.html">Login here</a>
+            <a href="login.php">Login here</a>
         </p>
     </div>
 
@@ -96,16 +97,44 @@
             return valid;
         }
 
-        registerForm.addEventListener("submit", (e) => {
+        registerForm.addEventListener("submit", async (e) => {
             e.preventDefault();
 
             if (validateRegister()) {
-                registerSuccess.textContent =
-                    "Regjistrimi u krye me sukses!";
+                try {
+                    const response = await fetch('../api/register.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            username: registerUsername.value.trim(),
+                            email: registerEmail.value.trim(),
+                            password: registerPassword.value.trim(),
+                            confirmPassword: registerConfirm.value.trim()
+                        })
+                    });
 
-                setTimeout(() => {
-                    window.location.href = "../Login/login.html";
-                }, 700);
+                    const data = await response.json();
+
+                    if (data.success) {
+                        registerSuccess.textContent = "Regjistrimi u krye me sukses!";
+                        setTimeout(() => {
+                            window.location.href = "login.php";
+                        }, 700);
+                    } else {
+                        if (data.message.includes('username') || data.message.includes('Username')) {
+                            registerUsernameError.textContent = data.message;
+                        } else if (data.message.includes('email') || data.message.includes('Email')) {
+                            registerEmailError.textContent = data.message;
+                        } else {
+                            registerUsernameError.textContent = data.message;
+                        }
+                    }
+                } catch (error) {
+                    registerUsernameError.textContent = "Error: Could not connect to server.";
+                    console.error('Error:', error);
+                }
             }
         });
 
