@@ -62,18 +62,6 @@ $conn->close();
 <section class="hero-slider">
     <div class="slider-window">
         <div class="slider-track" id="heroSliderTrack">
-            <div class="slide">
-                <h3>Explore Interactive Map</h3>
-                <p>Drag, zoom, and discover unique outdoor locations.</p>
-            </div>
-            <div class="slide">
-                <h3>Book Tickets Instantly</h3>
-                <p>Choose a place, pick a date, and download your ticket as PDF.</p>
-            </div>
-            <div class="slide">
-                <h3>Plan With Friends</h3>
-                <p>Share locations and plan unforgettable outdoor adventures.</p>
-            </div>
         </div>
     </div>
 </section>

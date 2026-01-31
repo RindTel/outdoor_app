@@ -112,7 +112,7 @@ $tickets = TicketOrder::getAllByUserId($userId);
             <?php foreach ($tickets as $t): ?>
                 <div class="ticket-card">
                     <?php if (!empty($t['place_image'])): ?>
-                        <img src="../../images/<?php echo htmlspecialchars($t['place_image']); ?>" alt="Place" class="ticket-image">
+                        <img src="../Home/Locations/<?php echo htmlspecialchars($t['place_image']); ?>" alt="Place" class="ticket-image">
                     <?php else: ?>
                         <div class="ticket-image" style="background: #444;"></div>
                     <?php endif; ?>

@@ -89,7 +89,11 @@
                     if (data.success) {
                         loginSuccess.textContent = "Mirë se erdhe!";
                         setTimeout(() => {
-                            window.location.href = "../Pages/Home/home.php";
+                            if (data.role === 'admin') {
+                                window.location.href = "../Pages/Admin/dashboard.php";
+                            } else {
+                                window.location.href = "../Pages/Home/home.php";
+                            }
                         }, 500);
                     } else {
                         loginUserError.textContent = data.message || "Username apo passwordi i pasaktë.";
